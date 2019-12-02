@@ -494,29 +494,17 @@ process_cpu_seconds_total <span class="m">0</span>.3038910000000002 <span class=
 
 
 <h3 id="deploy-prometheus-monitoring-stack-for-applications">Deploy Prometheus monitoring stack for applications.<a class="headerlink" href="#deploy-prometheus-monitoring-stack-for-applications" title="Permanent link">&para;</a></h3>
-<ol>
-<li>Create a new project for the Prometheus monitoring stack for applications.</li>
-</ol>
+<p>1) Create a new project for the Prometheus monitoring stack for applications.</p>
 <p><img alt="" src="../images/2019-11-13-13-28-53.png" /></p>
-<ol>
-<li>Select Operators -&gt; Operator Hub and select <code>Prometheus Operator</code>. Click <code>Install</code>.</li>
-</ol>
+<p>2) Select Operators -&gt; Operator Hub and select <code>Prometheus Operator</code>. Click <code>Install</code>.</p>
 <p><img alt="" src="../images/2019-11-13-13-27-51.png" /></p>
-<ol>
-<li>In the <code>Create Operator Subscription</code> window click <code>Subscribe</code>.</li>
-</ol>
+<p>3) In the <code>Create Operator Subscription</code> window click <code>Subscribe</code>.</p>
 <p><img alt="" src="../images/2019-11-13-13-44-07.png" /></p>
-<ol>
-<li>Wait until Prometheus Operator is deployed and click <code>Prometheus Operator</code> link.</li>
-</ol>
+<p>4) Wait until Prometheus Operator is deployed and click <code>Prometheus Operator</code> link.</p>
 <p><img alt="" src="../images/2019-11-13-13-44-44.png" /></p>
-<ol>
-<li>Select <code>Prometheus</code> tab and click <code>Create Prometheus</code> button.</li>
-</ol>
+<p>5) Select <code>Prometheus</code> tab and click <code>Create Prometheus</code> button.</p>
 <p><img alt="" src="../images/2019-11-13-13-45-19.png" /></p>
-<ol>
-<li>Modify default YAML template for Prometheus. I added <code>serviceMonitorSelector</code> definition which will instruct defined Prometheus instance to match <code>ServiceMonitors</code> with label <code>key=btm-metrics</code>. I also changed the Prometheus instance name to <code>app-monitor</code>.</li>
-</ol>
+<p>6) Modify default YAML template for Prometheus. I added <code>serviceMonitorSelector</code> definition which will instruct defined Prometheus instance to match <code>ServiceMonitors</code> with label <code>key=btm-metrics</code>. I also changed the Prometheus instance name to <code>app-monitor</code>.</p>
 <div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">monitoring.coreos.com/v1</span>
 <span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Prometheus</span>
 <span class="nt">metadata</span><span class="p">:</span>
@@ -543,13 +531,9 @@ process_cpu_seconds_total <span class="m">0</span>.3038910000000002 <span class=
 
 <p>Click <code>Create</code> button.</p>
 <p><img alt="" src="../images/2019-11-14-22-05-51.png" /></p>
-<ol>
-<li>Select <code>Service Monitor</code> tab and click <code>Create Service Monitor</code>.</li>
-</ol>
+<p>7) Select <code>Service Monitor</code> tab and click <code>Create Service Monitor</code>.</p>
 <p><img alt="" src="../images/2019-11-13-13-46-31.png" /></p>
-<ol>
-<li>Modify default YAML template for ServiceMonitor. I added <code>namespaceSelector</code> definition to limit the scope to naespace <code>default</code> where my app has been deployed and modified <code>selector</code> that to look for services with label <code>name=b2m-nodejs</code>. I also changed the Service monitor name to <code>app-monitor</code>.</li>
-</ol>
+<p>8) Modify default YAML template for ServiceMonitor. I added <code>namespaceSelector</code> definition to limit the scope to naespace <code>default</code> where my app has been deployed and modified <code>selector</code> that to look for services with label <code>name=b2m-nodejs</code>. I also changed the Service monitor name to <code>app-monitor</code>.</p>
 <div class="codehilite"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">monitoring.coreos.com/v1</span>
 <span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ServiceMonitor</span>
 <span class="nt">metadata</span><span class="p">:</span>
@@ -571,9 +555,7 @@ process_cpu_seconds_total <span class="m">0</span>.3038910000000002 <span class=
 
 
 <p><img alt="" src="../images/2019-11-13-13-49-32.png" /></p>
-<ol>
-<li>Grant <code>view</code> cluster role to the Service Account created by the operator and used by Prometheus.</li>
-</ol>
+<p>9) Grant <code>view</code> cluster role to the Service Account created by the operator and used by Prometheus.</p>
 <div class="codehilite"><pre><span></span>oc adm policy add-cluster-role-to-user view system:serviceaccount:monitoring:prometheus-k8s
 </pre></div>
 
@@ -583,53 +565,33 @@ process_cpu_seconds_total <span class="m">0</span>.3038910000000002 <span class=
 </pre></div>
 
 
-<ol>
-<li>Expose app monitoring Prometheus route:</li>
-</ol>
+<p>10) Expose app monitoring Prometheus route:</p>
 <div class="codehilite"><pre><span></span>oc expose svc/prometheus-operated -n monitoring
 </pre></div>
 
 
-<ol>
-<li>Collect the app monitoring Prometheus URL:</li>
-</ol>
+<p>11) Collect the app monitoring Prometheus URL:</p>
 <div class="codehilite"><pre><span></span>$ oc get routes -n monitoring
 NAME                  HOST/PORT                                                   PATH   SERVICES              PORT   TERMINATION   WILDCARD
 prometheus-operated   prometheus-operated-monitoring.apps.rsocp.os.fyre.ibm.com          prometheus-operated   web                  None
 </pre></div>
 
 
-<ol>
-<li>Verify that app monitoring Prometheus can scrape <code>b2m-nodejs</code> app. Access the Prometheus URL via browser and select Status -&gt; Targets.</li>
-</ol>
+<p>12) Verify that app monitoring Prometheus can scrape <code>b2m-nodejs</code> app. Access the Prometheus URL via browser and select Status -&gt; Targets.</p>
 <p><img alt="" src="../images/2019-11-14-22-48-30.png" /></p>
-<ol>
-<li>Verify that instrumented metrics are collected:</li>
-</ol>
+<p>13) Verify that instrumented metrics are collected:</p>
 <p><img alt="" src="../images/2019-11-14-22-51-10.png" /></p>
 <h3 id="deploy-grafana-operator">Deploy Grafana Operator<a class="headerlink" href="#deploy-grafana-operator" title="Permanent link">&para;</a></h3>
-<ol>
-<li>Deploy the Grafana Operator from OperatorHub using the same steps as for Prometheus Operator.
-Now you should see it in <code>Operators -&gt; Installed Operators</code>.</li>
-</ol>
+<p>1) Deploy the Grafana Operator from OperatorHub using the same steps as for Prometheus Operator.
+Now you should see it in <code>Operators -&gt; Installed Operators</code>.</p>
 <p><img alt="" src="../images/2019-11-19-13-54-49.png" /></p>
-<ol>
-<li>Click on the Grafana Operator link, select <code>Grafana</code> tab and click <code>Create Grafana</code>.</li>
-</ol>
+<p>2) Click on the Grafana Operator link, select <code>Grafana</code> tab and click <code>Create Grafana</code>.</p>
 <p><img alt="" src="../images/2019-11-19-13-58-23.png" /></p>
-<ol>
-<li>
-<p>Modify the name of the Grafana instance to something meaningful. I named it <code>app-monitoring-grafana</code>. Click <code>Create</code> button. Modify also the admin user name and password.</p>
-</li>
-<li>
-<p>Return to the Grafana Operator details, select <code>Grafana Data Source</code> and click <code>Create Grafana Data Source</code> button. Rename the <code>name:</code> to something meaningful (I named it <code>app-monitoring-grafana-datasource</code>) and modify spec.datasources.url to your app monitoring prometheus instance. In my case it was <code>http://prometheus-operated:9090</code>. </p>
-</li>
-</ol>
+<p>3) Modify the name of the Grafana instance to something meaningful. I named it <code>app-monitoring-grafana</code>. Click <code>Create</code> button. Modify also the admin user name and password.</p>
+<p>4) Return to the Grafana Operator details, select <code>Grafana Data Source</code> and click <code>Create Grafana Data Source</code> button. Rename the <code>name:</code> to something meaningful (I named it <code>app-monitoring-grafana-datasource</code>) and modify spec.datasources.url to your app monitoring prometheus instance. In my case it was <code>http://prometheus-operated:9090</code>. </p>
 <p><img alt="" src="../images/2019-11-19-14-12-59.png" /></p>
 <p>The prometheus hostname is the same as the app monitoring prometheus service name. You can find it in <code>Networking-&gt;Services</code> (filtered by the project where app monitoring prometheus has been deployed).</p>
-<ol>
-<li>Make the route for Grafana has been created in <code>Networking-&gt;Routes</code> (project <code>monitoring</code>). If it is not listed, create it with command:</li>
-</ol>
+<p>5) Make the route for Grafana has been created in <code>Networking-&gt;Routes</code> (project <code>monitoring</code>). If it is not listed, create it with command:</p>
 <div class="codehilite"><pre><span></span>oc create route edge  --service<span class="o">=</span>grafana-service -n monitoring
 </pre></div>
 
@@ -637,14 +599,10 @@ Now you should see it in <code>Operators -&gt; Installed Operators</code>.</li>
 <p>Access the Grafana console URL and logon to Grafana.
 Verify the Prometheus datasource has been created and can connect to app monitoring Prometheus.</p>
 <p>Create sample monitoring dashboard and copy dashboard JSON definition or use the one provided in this repository: <code>app-monitoring-dashboard.json</code>.</p>
-<ol>
-<li>Return to the Grafana Operator details in OpenShift console, select <code>Grafana Dashboard</code> and click <code>Create Grafana Dashboard</code> button. Rename the <code>metadata.name:</code> to something meaningful.</li>
-</ol>
+<p>6) Return to the Grafana Operator details in OpenShift console, select <code>Grafana Dashboard</code> and click <code>Create Grafana Dashboard</code> button. Rename the <code>metadata.name:</code> to something meaningful.</p>
 <p><img alt="" src="../images/2019-11-19-14-49-10.png" /></p>
 <p>and copy dashboard JSON definition to <code>spec.json</code>. You can also use provided example Grafana Dashboard yaml provided with this repo: <code>grafanadashboard-app-monitoring-dashboard.json</code>.</p>
-<ol>
-<li>Verify that Grafana dashboard has been provisioned:</li>
-</ol>
+<p>7) Verify that Grafana dashboard has been provisioned:</p>
 <p><img alt="" src="../images/2019-11-19-15-02-49.png" /></p>
 <h3 id="deploy-alertmanager-optional">Deploy Alertmanager (optional)<a class="headerlink" href="#deploy-alertmanager-optional" title="Permanent link">&para;</a></h3>
 <p>Application monitoring Prometheus Operator can fire alerts to existing/default Alertmanager instance located in <code>openshift-monitoring</code>. If you want to use it, the only thing you need to configure are alerting rules for your application, because Prometheus resource has been already preconfigured to send to platform monitoring Alertmanager (as you can see in the Prometheus resource YAML):</p>
