@@ -7,6 +7,7 @@ nav:
     - 3. Node.js monitoring instrumentation: monitoring-instrumentation.md
     - 4. Prometheus and Grafana configuration: Prometheus-Grafana.md
     - 5. Deploy to IBM Cloud Private: ICP.md
+    - 6. Deploy to RedHat OpenShift 4.2: OCP.md
     - About: about.md
 theme:
   name: 'material'

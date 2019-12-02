@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: b2m-nodejs
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: b2m-nodejs
+    spec:
+      containers:
+        - name: node-prom
+          image: rszypulka/b2m-nodejs
+          ports:
+            - containerPort: 3001
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3001
+            initialDelaySeconds: 3
+            periodSeconds: 10
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: b2m-nodejs
+  namespace: default
+  labels:
+    name: b2m-nodejs
+spec:
+  ports:
+    - port: 80
+      name: web
+      targetPort: 3001
+      protocol: TCP
+  selector:
+    app: b2m-nodejs
+
