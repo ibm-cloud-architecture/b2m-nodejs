@@ -26,6 +26,11 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
+     <loc>https://ibm-cloud-architecture.github.io/b2m-nodejs/OCP/</loc>
+     <lastmod>2019-12-02</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
      <loc>https://ibm-cloud-architecture.github.io/b2m-nodejs/about/</loc>
      <lastmod>2019-12-02</lastmod>
      <changefreq>daily</changefreq>
