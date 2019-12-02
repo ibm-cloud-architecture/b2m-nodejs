@@ -301,8 +301,8 @@ Alerting Rules for application monitoring can be created from the `Operator Deta
 
 Specify alert rule definition in the YAML file. You can use provided ExampleAlert.yaml as an example.
 
-![](/images/2019-11-20-13-43-47.png)
+![](images/2019-11-20-13-43-47.png)
 
 After short time verify that your alert(s) have been activated using  Prometheus UI:
 
-![](/images/2019-11-21-15-53-47.png)
+![](images/2019-11-21-15-53-47.png)
