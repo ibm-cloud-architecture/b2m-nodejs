@@ -1,6 +1,6 @@
 site_name: Build to Manage - Node.js application monitoring and logging lab
-repo_url: https://github.com/rafal-szypulka/b2m-nodejs
-site_url: https://rafal-szypulka.github.io/b2m-nodejs
+repo_url: https://github.com/ibm-cloud-architecture/b2m-nodejs
+site_url: https://ibm-cloud-architecture.github.io/b2m-nodejs
 nav:
     - 1. Introduction: index.md
     - 2. Node.js logging and Elastic stack integration: logging.md
